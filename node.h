@@ -1,6 +1,5 @@
 //Gezim Saciri & Ben Liepert
 //node.h
-
 #ifndef NODE_H
 #define NODE_H
 
@@ -19,7 +18,8 @@ class Node
     Node<KeyType>* parent;
     Node<KeyType>* leftChild;
     Node<KeyType>* rightChild;
-    enum color {red, black};
+    enum color_t {red, black};
+    color_t color;
 
     std::string toString() const;
     bool operator<(const Node &n);

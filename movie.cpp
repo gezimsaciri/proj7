@@ -1,6 +1,5 @@
 //Gezim Saciri & Ben Liepert
 //source file for movie.h
-
 #include <iostream>
 #include <sstream>
 #include <string>

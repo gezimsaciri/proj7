@@ -1,6 +1,5 @@
 //Gezim Saciri & Ben Liepert
 //movie.h
-
 #ifndef MOVIE_H
 #define MOVIE_H
 

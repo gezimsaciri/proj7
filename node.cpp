@@ -1,17 +1,15 @@
 //Gezim Saciri & Ben Leipert
 //source file for node.h
-
 #include <iostream>
 #include <string>
 #include <sstream>
 #include "node.h"
-
 using namespace std;
 
 //==============================
 // defualt constructor
 // pre-condition: nothing
-// post-condition:
+// post-condition: creates an empty node
 template <class KeyType>
 Node<KeyType>::Node(){
   //errythang empty
@@ -19,12 +17,13 @@ Node<KeyType>::Node(){
   parent = NULL;
   leftChild = NULL;
   rightChild = NULL;
+  color = black;
 }
 
 // =============================
 // primary constructor
-// Pre-condition:
-// Post-condition:
+// Pre-condition: nothing
+// Post-condition: creates a basic node
 // =============================
 template <class KeyType>
 Node<KeyType>::Node(KeyType &k){
@@ -32,6 +31,7 @@ Node<KeyType>::Node(KeyType &k){
   parent = NULL;
   leftChild = NULL;
   rightChild = NULL;
+  color = black;
 }
 
 // =============================
@@ -45,6 +45,7 @@ Node<KeyType>::Node(const Node<KeyType>& n){
   parent = n.parent;
   leftChild = n.leftChild;
   rightChild = n.rightChild;
+  color = n.color;
 }
 
 // =============================

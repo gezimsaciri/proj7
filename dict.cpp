@@ -1,6 +1,5 @@
 //Gezim Saciri & Ben Liepert
 //source file for dict.h
-
 #include <iostream>
 #include <string>
 #include <sstream>

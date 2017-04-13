@@ -1,6 +1,5 @@
 //Gezim Saciri & Ben Liepert
 //test file for the Dictionary class
-
 #include <iostream>
 #include <sstream>
 #include "dict.h"

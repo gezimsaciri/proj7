@@ -1,6 +1,5 @@
 //Ben Liepert & Gezim Saciri
 //testing file for the movie class
-
 #include <iostream>
 #include <cassert>
 #include "movie.h"

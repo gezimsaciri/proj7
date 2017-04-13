@@ -8,10 +8,10 @@ LDOPTIONS =
 # Entry to bring the package up to date
 #    The "make all" entry should be the first real entry
 
-all: test_bst test_node test_dict test_movie test_moviedict
+all: test_rbt test_node test_dict test_movie test_query
 
-test_bst: bst.h bst.cpp test_bst.cpp node.h node.cpp
-	g++ $(CPPOPTIONS) -o test_bst test_bst.cpp
+test_rbt: rbt.h rbt.cpp test_rbt.cpp node.h node.cpp
+	g++ $(CPPOPTIONS) -o test_rbt test_rbt.cpp
 
 test_node: node.h node.cpp test_node.cpp
 	g++ $(CPPOPTIONS) -o test_node test_node.cpp
@@ -22,8 +22,8 @@ test_dict: dict.h dict.cpp test_dict.cpp
 test_movie: movie.h movie.cpp test_movie.cpp
 	g++ $(CPPOPTIONS) -o test_movie test_movie.cpp
 
-test_moviedict: movie.h movie.cpp movieDict.cpp
-	g++ $(CPPOPTIONS) -o test_moviedict movieDict.cpp
+test_query: movie.h movie.cpp query_movies.cpp dict.h dict.cpp rbt.h rbt.cpp
+	g++ $(CPPOPTIONS) -o query_movies query_movies.cpp
 
 
 # ***************************************************************

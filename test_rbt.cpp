@@ -1,6 +1,5 @@
 //Gezim Saciri & Ben Liepert
 //test file for RedBlackTree class
-
 #include <iostream>
 #include <sstream>
 #include "rbt.h"
