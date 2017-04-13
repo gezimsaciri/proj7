@@ -31,7 +31,7 @@ class RedBlackTree
 
   private:
     Node<KeyType>* root; //bst's root
-    //Node<KeyType>* nil; //nil pointer
+    Node<KeyType>* nil; //nil pointer
     std::string        inOrd(Node<KeyType> *node, std::string &tree) const;
     std::string        preOrd(Node<KeyType> *node, std::string &tree) const;
     std::string        postOrd(Node<KeyType> *node, std::string &tree) const;
