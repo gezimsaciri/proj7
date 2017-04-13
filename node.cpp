@@ -17,7 +17,7 @@ Node<KeyType>::Node(){
   parent = NULL;
   leftChild = NULL;
   rightChild = NULL;
-  color = black;
+  color = BLACK;
 }
 
 // =============================
@@ -31,7 +31,7 @@ Node<KeyType>::Node(KeyType &k){
   parent = NULL;
   leftChild = NULL;
   rightChild = NULL;
-  color = black;
+  color = BLACK;
 }
 
 // =============================

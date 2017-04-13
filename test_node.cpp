@@ -48,12 +48,10 @@ void test_lessThanOp()
   cout << "Less than operator passed!\n";
 }
 
-
 int main()
 {
     test_constructor();
     test_copyConstructor();
     test_lessThanOp();
-
     cout << "All Tests Passed!\n";
 }

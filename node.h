@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+enum colors {RED, BLACK};
+
 template <class KeyType>
 class Node
 {
@@ -18,8 +20,7 @@ class Node
     Node<KeyType>* parent;
     Node<KeyType>* leftChild;
     Node<KeyType>* rightChild;
-    enum color_t {red, black};
-    color_t color;
+    colors color;
 
     std::string toString() const;
     bool operator<(const Node &n);

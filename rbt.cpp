@@ -11,6 +11,7 @@ using namespace std;
 template <class KeyType>
 RedBlackTree<KeyType>::RedBlackTree(){
   root = NULL;
+  //nil->color = black;
 }
 
 //=====================================
