@@ -10,7 +10,7 @@ using namespace std;
 // default constructor
 template <class KeyType>
 RedBlackTree<KeyType>::RedBlackTree(){
-  root = NULL;
+  root = nil;
   nil->color = BLACK;
 }
 
@@ -51,7 +51,7 @@ template <class KeyType>
 void  RedBlackTree<KeyType>::insert(KeyType *k){
   Node<KeyType> *par = nil; //keep track of parent w/this
   Node<KeyType> *c = root;
-  while (c != nil){
+  while (c != nil || c != NULL){
     par = c;
     if (*k < *c->key){ //need to deref to compare vals
       c = c->leftChild;
@@ -186,6 +186,9 @@ KeyType*  RedBlackTree<KeyType>::successor(const KeyType& k){
     return NULL;
   }
   Node<KeyType>* n = search(k); //get the node whose value is k
+  if(n == NULL){
+    return NULL;
+  }
   Node<KeyType> *nRC = n->rightChild;
   if(nRC != NULL){
     return (min(nRC)); //make a private one now;
@@ -211,6 +214,9 @@ KeyType*  RedBlackTree<KeyType>::predecessor(const KeyType& k){
     return NULL;
   }
   Node<KeyType>* n = search(k); //get the node whose value is k
+  if(n == NULL){
+    return NULL;
+  }
   Node<KeyType> *nLC = n->leftChild;
   if(nLC != nil){
     return (max(nLC));
