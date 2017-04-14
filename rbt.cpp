@@ -27,7 +27,7 @@ RedBlackTree<KeyType>::~RedBlackTree(){
 // post condition: A new RedBlackTree that is a copy of the one passed in
 template <class KeyType>
 RedBlackTree<KeyType>::RedBlackTree(const RedBlackTree<KeyType>& rbt){
-  root = NULL;
+  root = nil;
   nil->color = BLACK;
   Node<KeyType>* traverse = rbt.root;
   copy(traverse);
@@ -36,11 +36,11 @@ RedBlackTree<KeyType>::RedBlackTree(const RedBlackTree<KeyType>& rbt){
 //=====================================
 // get
 // pre condition: A RedBlackTree and a KeyType k that it will search for
-// post condition: The RedBlackTree(unchanged) and will return value key or NULL
+// post condition: The RedBlackTree(unchanged) and will return value key or nil
 template <class KeyType>
 KeyType*  RedBlackTree<KeyType>::get(const KeyType& k) {
   Node<KeyType>* found = search(k);
-  return (found == nil) ? NULL : found->key; //NULL if not in rbt, key otherwise
+  return (found == nil) ? nil : found->key; //NULL if not in rbt, key otherwise
 }
 
 //=====================================
@@ -51,7 +51,7 @@ template <class KeyType>
 void  RedBlackTree<KeyType>::insert(KeyType *k){
   Node<KeyType> *par = nil; //keep track of parent w/this
   Node<KeyType> *c = root;
-  while (c != nil || c != NULL){
+  while (c != nil){
     par = c;
     if (*k < *c->key){ //need to deref to compare vals
       c = c->leftChild;
@@ -80,7 +80,7 @@ void  RedBlackTree<KeyType>::insert(KeyType *k){
 // post condition: The RedBlackTree with the value k removed from it
 template <class KeyType>
 void  RedBlackTree<KeyType>::remove(const KeyType& k){
-  if(root == NULL){ //can't remove if empty
+  if(root == nil){ //can't remove if empty
     throw EmptyError();
   }
   Node<KeyType>* par = nil;
@@ -117,7 +117,7 @@ void  RedBlackTree<KeyType>::remove(const KeyType& k){
 // post condition: The RedBlackTree(unchanged) and returns the maximum key
 template <class KeyType>
 KeyType*  RedBlackTree<KeyType>::maximum() const{
-  if (root == NULL){
+  if (root == nil){
     throw EmptyError();
   }
   Node<KeyType>* n = root;
@@ -133,7 +133,7 @@ KeyType*  RedBlackTree<KeyType>::maximum() const{
 // post condition: The RedBlackTree and returns the minimum value
 template <class KeyType>
 KeyType*  RedBlackTree<KeyType>::minimum()const{
-  if (root == NULL){
+  if (root == nil){
     throw EmptyError();
   }
   Node<KeyType>* n = root;
@@ -148,7 +148,7 @@ KeyType*  RedBlackTree<KeyType>::minimum()const{
 // post condition: The RedBlackTree and returns the minimum value
 template <class KeyType>
 KeyType*  RedBlackTree<KeyType>::max(Node<KeyType> *node) const{
-  if (node == NULL){
+  if (node == nil){
     throw EmptyError();
   }
   Node<KeyType>* n = node;
@@ -163,7 +163,7 @@ KeyType*  RedBlackTree<KeyType>::max(Node<KeyType> *node) const{
 // post condition: The RedBlackTree and returns the minimum value
 template <class KeyType>
 KeyType*  RedBlackTree<KeyType>::min(Node<KeyType>* node) const{
-  if (node == NULL){
+  if (node == nil){
     throw EmptyError();
   }
   Node<KeyType>* n = node;
@@ -179,18 +179,18 @@ KeyType*  RedBlackTree<KeyType>::min(Node<KeyType>* node) const{
 // post condition: The RedBlackTree(uchanged) and returns the successor
 template <class KeyType>
 KeyType*  RedBlackTree<KeyType>::successor(const KeyType& k){
-  if (root == NULL){
+  if (root == nil){
     throw EmptyError();
   }
   if(k == *maximum()){ // max has no successor
-    return NULL;
+    return nil;
   }
   Node<KeyType>* n = search(k); //get the node whose value is k
-  if(n == NULL){
-    return NULL;
+  if(n == nil){
+    return nil;
   }
   Node<KeyType> *nRC = n->rightChild;
-  if(nRC != NULL){
+  if(nRC != nil){
     return (min(nRC)); //make a private one now;
   }
   Node<KeyType>* par = n->parent;
@@ -207,15 +207,15 @@ KeyType*  RedBlackTree<KeyType>::successor(const KeyType& k){
 // post condition: The RedBlackTree(uchanged) and returns the predecessor
 template <class KeyType>
 KeyType*  RedBlackTree<KeyType>::predecessor(const KeyType& k){
-  if (root == NULL){
+  if (root == nil){
     throw EmptyError();
   }
   if(k == *minimum()){ //min has no predecessor
-    return NULL;
+    return nil;
   }
   Node<KeyType>* n = search(k); //get the node whose value is k
-  if(n == NULL){
-    return NULL;
+  if(n == nil){
+    return nil;
   }
   Node<KeyType> *nLC = n->leftChild;
   if(nLC != nil){
@@ -236,7 +236,7 @@ KeyType*  RedBlackTree<KeyType>::predecessor(const KeyType& k){
 template <class KeyType>
 RedBlackTree<KeyType>&  RedBlackTree<KeyType>::operator=(const RedBlackTree<KeyType> &rbt){
   destroy(root);
-  root = NULL; //set to NULL AFTER we destroy so we can still traverse
+  root = nil; //set to nil AFTER we destroy so we can still traverse
   Node<KeyType>* traverse = rbt.root;
   copy(traverse);
 }
@@ -249,9 +249,9 @@ template <class KeyType>
 Node<KeyType>*  RedBlackTree<KeyType>::search(const KeyType& k){
   Node<KeyType>* n = root;
 
-  // do we make root nil or NULL? would matter in here.
+  // do we make root nil or nil? would matter in here.
 
-  while(n != NULL && *n->key != k){
+  while(n != nil && *n->key != k){
     if(!(*n->key < k) && (*n->key != k)){
       n = n->leftChild;
     }else{
@@ -267,7 +267,7 @@ Node<KeyType>*  RedBlackTree<KeyType>::search(const KeyType& k){
 // post condition: The RedBlackTree where the two nodes have swapped places
 template <class KeyType>
 void  RedBlackTree<KeyType>::transplant(Node<KeyType>* rem, Node<KeyType>* rep){
-  if(rem->parent == NULL){
+  if(rem->parent == nil){
     root = rep;
   }else if(rem == rem->parent->leftChild){
     rem->parent->leftChild = rep;
