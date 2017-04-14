@@ -10,8 +10,8 @@ using namespace std;
 // default constructor
 template <class KeyType>
 RedBlackTree<KeyType>::RedBlackTree(){
-  root = NULL;
-  //nil->color = black;
+  root = nil;
+  nil->color = BLACK;
 }
 
 //=====================================
@@ -28,6 +28,7 @@ RedBlackTree<KeyType>::~RedBlackTree(){
 template <class KeyType>
 RedBlackTree<KeyType>::RedBlackTree(const RedBlackTree<KeyType>& rbt){
   root = NULL;
+  nil->color = BLACK;
   Node<KeyType>* traverse = rbt.root;
   copy(traverse);
 }
@@ -39,7 +40,7 @@ RedBlackTree<KeyType>::RedBlackTree(const RedBlackTree<KeyType>& rbt){
 template <class KeyType>
 KeyType*  RedBlackTree<KeyType>::get(const KeyType& k) {
   Node<KeyType>* found = search(k);
-  return (found == NULL) ? NULL : found->key; //NULL if not in rbt, key otherwise
+  return (found == nil) ? NULL : found->key; //NULL if not in rbt, key otherwise
 }
 
 //=====================================
@@ -48,9 +49,9 @@ KeyType*  RedBlackTree<KeyType>::get(const KeyType& k) {
 // post condition: The RedBlackTree with the KeyType pointer k inserted into the tree
 template <class KeyType>
 void  RedBlackTree<KeyType>::insert(KeyType *k){
-  Node<KeyType> *par = NULL; //keep track of parent w/this
+  Node<KeyType> *par = nil; //keep track of parent w/this
   Node<KeyType> *c = root;
-  while (c != NULL){
+  while (c != nil || c != NULL){
     par = c;
     if (*k < *c->key){ //need to deref to compare vals
       c = c->leftChild;
@@ -59,11 +60,12 @@ void  RedBlackTree<KeyType>::insert(KeyType *k){
     }
   }
   Node<KeyType> *i = new Node<KeyType>; //create node to insert
+  i->color = RED;
   i->key = k; //key stores a pointer, k is a ptr
   i->parent = par;
-  i->leftChild = NULL;
-  i->rightChild = NULL;
-  if (par == NULL){ //empty tree
+  i->leftChild = nil;
+  i->rightChild = nil;
+  if (par == nil){ //empty tree
     root = i;
   }else if(*i->key < *par->key){
     par->leftChild = i;
@@ -81,7 +83,7 @@ void  RedBlackTree<KeyType>::remove(const KeyType& k){
   if(root == NULL){ //can't remove if empty
     throw EmptyError();
   }
-  Node<KeyType>* par = NULL;
+  Node<KeyType>* par = nil;
   Node<KeyType>* n = root;
   while (k != *n->key){ //get node to be removed
     par = n;
@@ -91,9 +93,9 @@ void  RedBlackTree<KeyType>::remove(const KeyType& k){
       n = n->rightChild;
     }
   }
-  if(n->leftChild == NULL){
+  if(n->leftChild == nil){
     transplant(n, n->rightChild);
-  }else if(n->rightChild == NULL){
+  }else if(n->rightChild == nil){
     transplant(n, n->leftChild);
   }else{
     Node<KeyType>* successor = search(*min(n->rightChild));
@@ -119,7 +121,7 @@ KeyType*  RedBlackTree<KeyType>::maximum() const{
     throw EmptyError();
   }
   Node<KeyType>* n = root;
-  while(n->rightChild != NULL){
+  while(n->rightChild != nil){
     n = n->rightChild;
   }
   return n->key;
@@ -135,7 +137,7 @@ KeyType*  RedBlackTree<KeyType>::minimum()const{
     throw EmptyError();
   }
   Node<KeyType>* n = root;
-  while(n->leftChild != NULL){
+  while(n->leftChild != nil){
     n = n->leftChild;
   }
   return n->key;
@@ -150,7 +152,7 @@ KeyType*  RedBlackTree<KeyType>::max(Node<KeyType> *node) const{
     throw EmptyError();
   }
   Node<KeyType>* n = node;
-  while(n->rightChild != NULL){
+  while(n->rightChild != nil){
     n = n->rightChild;
   }
   return n->key;
@@ -165,7 +167,7 @@ KeyType*  RedBlackTree<KeyType>::min(Node<KeyType>* node) const{
     throw EmptyError();
   }
   Node<KeyType>* n = node;
-  while(n->leftChild != NULL){
+  while(n->leftChild != nil){
     n = n->leftChild;
   }
   return n->key;
@@ -184,12 +186,15 @@ KeyType*  RedBlackTree<KeyType>::successor(const KeyType& k){
     return NULL;
   }
   Node<KeyType>* n = search(k); //get the node whose value is k
+  if(n == NULL){
+    return NULL;
+  }
   Node<KeyType> *nRC = n->rightChild;
   if(nRC != NULL){
     return (min(nRC)); //make a private one now;
   }
   Node<KeyType>* par = n->parent;
-  while(par != NULL && n == par->rightChild){
+  while(par != nil && n == par->rightChild){
     n = par;
     par = par->parent;
   }
@@ -209,12 +214,15 @@ KeyType*  RedBlackTree<KeyType>::predecessor(const KeyType& k){
     return NULL;
   }
   Node<KeyType>* n = search(k); //get the node whose value is k
+  if(n == NULL){
+    return NULL;
+  }
   Node<KeyType> *nLC = n->leftChild;
-  if(nLC != NULL){
+  if(nLC != nil){
     return (max(nLC));
   }
   Node<KeyType>* par = n->parent;
-  while(par != NULL && n == par->leftChild){
+  while(par != nil && n == par->leftChild){
     n = par;
     par = par->parent;
   }
@@ -240,6 +248,9 @@ RedBlackTree<KeyType>&  RedBlackTree<KeyType>::operator=(const RedBlackTree<KeyT
 template <class KeyType>
 Node<KeyType>*  RedBlackTree<KeyType>::search(const KeyType& k){
   Node<KeyType>* n = root;
+
+  // do we make root nil or NULL? would matter in here.
+
   while(n != NULL && *n->key != k){
     if(!(*n->key < k) && (*n->key != k)){
       n = n->leftChild;
@@ -263,7 +274,7 @@ void  RedBlackTree<KeyType>::transplant(Node<KeyType>* rem, Node<KeyType>* rep){
   }else{
     rem->parent->rightChild = rep;
   }
-  if(rep != NULL){
+  if(rep != nil){
     rep->parent = rem->parent;
   }
 }
@@ -293,7 +304,7 @@ std::string  RedBlackTree<KeyType>::postOrder(){
 // post condition: Only returns the string tree which contains the keys of the nodes inOrd
 template <class KeyType>
 string  RedBlackTree<KeyType>::inOrd(Node<KeyType> *node, string& tree)const {
-  if (node != NULL){
+  if (node != nil){
     inOrd(node->leftChild, tree);
     tree += (" " + node->toString());
     inOrd(node->rightChild, tree);
@@ -307,7 +318,7 @@ string  RedBlackTree<KeyType>::inOrd(Node<KeyType> *node, string& tree)const {
 // post condition: Only returns the string tree which contains the keys of the nodes preOrd
 template <class KeyType>
 string  RedBlackTree<KeyType>::preOrd(Node<KeyType> *node, std::string& tree)const{
-  if (node != NULL){
+  if (node != nil){
     tree += (" " + node->toString());
     inOrd(node->leftChild, tree);
     inOrd(node->rightChild, tree);
@@ -321,7 +332,7 @@ string  RedBlackTree<KeyType>::preOrd(Node<KeyType> *node, std::string& tree)con
 // post condition: Only returns the string tree which contains the keys of the nodes postOrd
 template <class KeyType>
 string  RedBlackTree<KeyType>::postOrd(Node<KeyType> *node, std::string& tree)const{
-  if (node != NULL){
+  if (node != nil){
     inOrd(node->leftChild, tree);
     inOrd(node->rightChild, tree);
     tree += (" " + node->toString());
@@ -335,7 +346,7 @@ string  RedBlackTree<KeyType>::postOrd(Node<KeyType> *node, std::string& tree)co
 // post condition: The RedBlackTree that is the copy of the passed in tree
 template <class KeyType>
 void RedBlackTree<KeyType>::copy(Node<KeyType>* traverse){
-  if(traverse == NULL){
+  if(traverse == nil){
     return;
   }
   insert(traverse->key); //insert value
@@ -349,7 +360,7 @@ void RedBlackTree<KeyType>::copy(Node<KeyType>* traverse){
 // post condition: Deallocates the memory of the RedBlackTree
 template <class KeyType>
 void RedBlackTree<KeyType>::destroy(Node<KeyType>* traverse){
-  if(traverse == NULL){
+  if(traverse == nil){
     return;
   }
   delete(traverse->leftChild);
