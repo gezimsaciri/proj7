@@ -6,9 +6,6 @@
 #include "node.h"
 using namespace std;
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//test the color make sure it works right
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 void test_constructor()
 {
   Node<int> A;
