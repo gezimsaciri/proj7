@@ -44,7 +44,7 @@ class RedBlackTree
     void               leftRotate(Node<KeyType> *node);
     void               rightRotate(Node<KeyType> *node);
 
-    Node<KeyType>*     copy(Node<KeyType>* traverse, Node<KeyType>* parent); //creates a copy of a rbt with the root of another bst
+    Node<KeyType>*     copy(Node<KeyType>* traverse, Node<KeyType>* parent, Node<KeyType>* NIL); //creates a copy of a rbt with the root of another bst
     void               destroy(Node<KeyType>* node);
 };
 

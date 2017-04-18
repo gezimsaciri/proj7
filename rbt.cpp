@@ -11,10 +11,6 @@ using namespace std;
 template <class KeyType>
 RedBlackTree<KeyType>::RedBlackTree(){
   nil = new Node<KeyType>;
-  nil->color = BLACK;
-  nil->leftChild = nil;
-  nil->rightChild = nil;
-  nil->parent = nil;
   root = nil;
 }
 
@@ -31,10 +27,9 @@ RedBlackTree<KeyType>::~RedBlackTree(){
 // post condition: A new RedBlackTree that is a copy of the one passed in
 template <class KeyType>
 RedBlackTree<KeyType>::RedBlackTree(const RedBlackTree<KeyType>& rbt){
-  root = nil;
-  nil->color = BLACK;
-  Node<KeyType>* traverse = rbt.root;
-  copy(traverse, nil);
+  nil = new Node<KeyType>;
+  root = copy(rbt.root, nil, rbt.nil); //need to pass in the other tree's nil
+  // if we don't we won't know where to stop when traversing it
 }
 
 //=====================================
@@ -249,7 +244,7 @@ KeyType*  RedBlackTree<KeyType>::min(Node<KeyType>* node) const{
 // post condition: The RedBlackTree and returns the minimum value
 template <class KeyType>
 KeyType*  RedBlackTree<KeyType>::minimum()const{
-  if (root == nil){
+  if (root == nil){ //root shouldn't be NULL either
     throw EmptyError();
   }
   Node<KeyType>* n = root;
@@ -336,9 +331,8 @@ KeyType*  RedBlackTree<KeyType>::predecessor(const KeyType& k){
 template <class KeyType>
 RedBlackTree<KeyType>&  RedBlackTree<KeyType>::operator=(const RedBlackTree<KeyType> &rbt){
   destroy(root);
-  root = nil; //set to nil AFTER we destroy so we can still traverse
   Node<KeyType>* traverse = rbt.root;
-  copy(traverse, nil);
+  root = copy(traverse, rbt.nil);
 }
 
 //=====================================
@@ -404,6 +398,9 @@ std::string  RedBlackTree<KeyType>::postOrder(){
 // post condition: Only returns the string tree which contains the keys of the nodes inOrd
 template <class KeyType>
 string  RedBlackTree<KeyType>::inOrd(Node<KeyType> *node, string& tree)const {
+  if (node == NULL){
+    cout << "node = NULL" << endl;
+  }
   if (node != nil){
     inOrd(node->leftChild, tree);
     tree += (" " + node->toString());
@@ -445,15 +442,17 @@ string  RedBlackTree<KeyType>::postOrd(Node<KeyType> *node, std::string& tree)co
 // pre condition: A RedBlackTree and a node that is set to the root of the tree to copy
 // post condition: The RedBlackTree that is the copy of the passed in tree
 template <class KeyType>
-Node<KeyType>* RedBlackTree<KeyType>::copy(Node<KeyType>* traverse, Node<KeyType>* parent){
-  if(traverse == nil){ //assuming we don't need to check if traverse is NULL?
+Node<KeyType>* RedBlackTree<KeyType>::copy(Node<KeyType>* traverse, Node<KeyType>* parent,  Node<KeyType>* NIL){
+  if(traverse == NIL){ //assuming we don't need to check if traverse is NULL?
     return nil;
   }
   Node<KeyType> *n = new Node<KeyType>;
   n->key = traverse->key;
+  n->color = traverse->color;
   n->parent = parent;
-  n->leftChild = copy(traverse->leftChild, traverse);
-  n->rightChild = copy(traverse->rightChild, traverse);
+  n->leftChild = copy(traverse->leftChild, traverse, NIL);
+  n->rightChild = copy(traverse->rightChild, traverse, NIL);
+  return n;
 }
 
 //=====================================

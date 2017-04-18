@@ -6,7 +6,6 @@
 #include <cassert>
 using namespace std;
 
-
 void test_empty(){
   RedBlackTree<int> A;
   assert(A.empty());
@@ -31,6 +30,9 @@ void test_copy(){
   A.insert(&j);
   A.insert(&k);
   RedBlackTree<int> B(A);
+  cout << "A.inOrder() = \n" << A.inOrder() << endl;
+  cout << "A.preOrder() = \n" << A.preOrder() << endl;
+  cout << "A.postOrder() = \n" << A.postOrder() << endl;
   assert(A.inOrder() == B.inOrder());
   assert(A.preOrder() == B.preOrder());
   assert(A.postOrder() == B.postOrder());
@@ -232,7 +234,7 @@ void test_predecessor(){
 
 void test_inOrder(){
   RedBlackTree<int> A;
-  //assert(A.inOrder() == "{ }");
+  assert(A.inOrder() == "{ }");
   assert(A.empty());
   int i = 999;
   A.insert(&i);
@@ -295,7 +297,7 @@ void test_assignment(){
   B.insert(&l);
   B.insert(&m);
   B.insert(&n);
-  B = A;
+  //B = A;
   //assert(A.inOrder() == B.inOrder());
   //assert(A.preOrder() == B.preOrder());
   //assert(A.postOrder() == B.postOrder());
@@ -303,7 +305,7 @@ void test_assignment(){
 
 int main(){
 
-  //test_copy();
+  test_copy();
   test_assignment();
   test_empty();
   test_get();
