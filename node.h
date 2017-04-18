@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-enum colors {RED, BLACK};
+enum colors {BLACK, RED};
 
 template <class KeyType>
 class Node

@@ -10,8 +10,12 @@ using namespace std;
 // default constructor
 template <class KeyType>
 RedBlackTree<KeyType>::RedBlackTree(){
-  root = nil;
+  nil = new Node<KeyType>;
   nil->color = BLACK;
+  nil->leftChild = nil;
+  nil->rightChild = nil;
+  nil->parent = nil;
+  root = nil;
 }
 
 //=====================================
@@ -40,7 +44,7 @@ RedBlackTree<KeyType>::RedBlackTree(const RedBlackTree<KeyType>& rbt){
 template <class KeyType>
 KeyType*  RedBlackTree<KeyType>::get(const KeyType& k) {
   Node<KeyType>* found = search(k);
-  return (found == nil) ? nil : found->key; //NULL if not in rbt, key otherwise
+  return (found == nil) ? NULL : found->key; //NULL if not in rbt, key otherwise
 }
 
 //=====================================
@@ -49,10 +53,15 @@ KeyType*  RedBlackTree<KeyType>::get(const KeyType& k) {
 // post condition: The RedBlackTree with the KeyType pointer k inserted into the tree
 template <class KeyType>
 void  RedBlackTree<KeyType>::insert(KeyType *k){
+
   Node<KeyType> *par = nil; //keep track of parent w/this
   Node<KeyType> *c = root;
   while (c != nil){
     par = c;
+    if (k == NULL){
+      cout << "k is NULL\n";
+      exit(1);
+    }
     if (*k < *c->key){ //need to deref to compare vals
       c = c->leftChild;
     }else{
@@ -72,8 +81,102 @@ void  RedBlackTree<KeyType>::insert(KeyType *k){
   }else{
     par->rightChild = i;
   }
+  insertFixup(i);
 }
-
+//=====================================
+// insertFixup
+// pre condition: A RBT that is not following the properties of the RBT after an insertion
+// post condition: A RBT that follows all properties of RBT's
+template <class KeyType>
+void RedBlackTree<KeyType>::insertFixup(Node<KeyType> *current){
+  while(current->parent->color == RED){
+    if(current->parent == current->parent->parent->leftChild){
+      Node<KeyType> *uncle = current->parent->parent->rightChild;
+      if(uncle->color == RED){          // case 1
+        current->parent->color = BLACK;
+        uncle->color = BLACK;
+        current->parent->parent->color = RED;
+        current = current->parent->parent;
+      }
+      else{
+        if(current == current->parent->rightChild){ // case 2
+          current = current->parent;
+          leftRotate(current);
+        }
+        current->parent->color = BLACK;   // case 2 cont. and 3
+        current->parent->parent->color = RED;
+        rightRotate(current->parent->parent);
+      }
+    }
+    else{
+      Node<KeyType> *uncle = current->parent->parent->leftChild;
+      if(uncle->color == RED){         // case 4
+        current->parent->color = BLACK;
+        uncle->color = BLACK;
+        current->parent->parent->color = RED;
+        current = current->parent->parent;
+      }
+      else{
+        if(current == current->parent->leftChild){   // case 5
+          current = current->parent;
+          rightRotate(current);
+        }
+        current->parent->color = BLACK;        // case 5 cont. and 6
+        current->parent->parent->color = RED;
+        leftRotate(current->parent->parent);
+      }
+    }
+  }
+  root->color = BLACK;
+}
+//=====================================
+// leftRotate
+// pre condition: Takes an unbalanced RBT and given node and preforms a left rotation
+// post condition: Balances out the RBT to fufill the RBT property
+template <class KeyType>
+void RedBlackTree<KeyType>::leftRotate(Node<KeyType> *node){
+  Node<KeyType> *right = node->rightChild;
+  node->rightChild = right->leftChild;
+  if(right->leftChild != nil){
+    right->leftChild->parent = node;
+  }
+  right->parent = node->parent;
+  if(node->parent == nil){
+    root = right;
+  }
+  else if(node == node->parent->leftChild){
+    node->parent->leftChild = right;
+  }
+  else{
+    node->parent->rightChild = right;
+  }
+  right->leftChild = node;
+  node->parent = right;
+}
+//=====================================
+// rightRotate
+// pre condition: Takes an unbalanced RBT and given node and preforms a right rotation
+// post condition: Balances out the RBT to fufill the RBT property
+template <class KeyType>
+void RedBlackTree<KeyType>::rightRotate(Node<KeyType> *node){
+  Node<KeyType> *left = node->leftChild;
+  node->leftChild = left->rightChild;
+  if(left->rightChild != nil){
+    left->rightChild->parent = node;
+  }
+  left->parent = node->parent;
+  if(node->parent == nil){
+    root = left;
+  }
+  else if(node == node->parent->rightChild){
+    node->parent->rightChild = left;
+  }
+  else{
+    node->parent->leftChild = left;
+  }
+  left->rightChild = node;
+  node->parent = left;
+}
 //=====================================
 // remove
 // pre condition: A RedBlackTree that contains values(else EmptyError) and a value k to remove
@@ -110,7 +213,6 @@ void  RedBlackTree<KeyType>::remove(const KeyType& k){
     delete n;
   }
 }
-
 //=====================================
 // maximum
 // pre condition: A RedBlackTree with at least one value
@@ -126,7 +228,21 @@ KeyType*  RedBlackTree<KeyType>::maximum() const{
   }
   return n->key;
 }
-
+//=====================================
+// max (private)
+// pre condition: A RedBlackTree with at least one value
+// post condition: The RedBlackTree and returns the minimum value
+template <class KeyType>
+KeyType*  RedBlackTree<KeyType>::min(Node<KeyType>* node) const{
+  if (node == nil){
+    throw EmptyError();
+  }
+  Node<KeyType>* n = node;
+  while(n->leftChild != nil){
+    n = n->leftChild;
+  }
+  return n->key;
+}
 //=====================================
 // minimum
 // pre condition: A RedBlackTree with at least one value
@@ -158,22 +274,6 @@ KeyType*  RedBlackTree<KeyType>::max(Node<KeyType> *node) const{
   return n->key;
 }
 //=====================================
-// max (private)
-// pre condition: A RedBlackTree with at least one value
-// post condition: The RedBlackTree and returns the minimum value
-template <class KeyType>
-KeyType*  RedBlackTree<KeyType>::min(Node<KeyType>* node) const{
-  if (node == nil){
-    throw EmptyError();
-  }
-  Node<KeyType>* n = node;
-  while(n->leftChild != nil){
-    n = n->leftChild;
-  }
-  return n->key;
-}
-
-//=====================================
 // successor
 // pre condition: A RedBlackTree with at least one value
 // post condition: The RedBlackTree(uchanged) and returns the successor
@@ -183,11 +283,11 @@ KeyType*  RedBlackTree<KeyType>::successor(const KeyType& k){
     throw EmptyError();
   }
   if(k == *maximum()){ // max has no successor
-    return nil;
+    return NULL;
   }
   Node<KeyType>* n = search(k); //get the node whose value is k
   if(n == nil){
-    return nil;
+    return NULL;
   }
   Node<KeyType> *nRC = n->rightChild;
   if(nRC != nil){
@@ -211,11 +311,11 @@ KeyType*  RedBlackTree<KeyType>::predecessor(const KeyType& k){
     throw EmptyError();
   }
   if(k == *minimum()){ //min has no predecessor
-    return nil;
+    return NULL;
   }
   Node<KeyType>* n = search(k); //get the node whose value is k
   if(n == nil){
-    return nil;
+    return NULL;
   }
   Node<KeyType> *nLC = n->leftChild;
   if(nLC != nil){
@@ -346,7 +446,7 @@ string  RedBlackTree<KeyType>::postOrd(Node<KeyType> *node, std::string& tree)co
 // post condition: The RedBlackTree that is the copy of the passed in tree
 template <class KeyType>
 void RedBlackTree<KeyType>::copy(Node<KeyType>* traverse){
-  if(traverse == nil){
+  if(traverse == nil){ //assuming we don't need to check if traverse is NULL?
     return;
   }
   insert(traverse->key); //insert value
@@ -363,7 +463,7 @@ void RedBlackTree<KeyType>::destroy(Node<KeyType>* traverse){
   if(traverse == nil){
     return;
   }
-  delete(traverse->leftChild);
-  delete(traverse->rightChild);
+  destroy(traverse->leftChild);
+  destroy(traverse->rightChild);
   delete traverse; //get to bottom of left or right subtree, delete, recursive call
 }

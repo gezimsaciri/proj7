@@ -74,10 +74,19 @@ bool Node<KeyType>::operator<(const Node<KeyType> &n){
 template <class KeyType>
 string Node<KeyType>::toString() const{
 	stringstream ss;
+
   if (key == NULL){
-    ss << "( )";
+    if(color == RED){
+      ss << "(" << ", RED)";
+    }else{
+      ss << "(" << ", BLACK)";
+    }
   }else{
-    ss << "("  << *key <<  ")";
+    if(color == RED){
+      ss << "("  << *key << ", RED)";
+    }else{
+      ss << "("  << *key << ", BLACK)";
+    }
   }
 	return ss.str();
 }

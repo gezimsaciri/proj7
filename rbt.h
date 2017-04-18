@@ -14,7 +14,7 @@ class RedBlackTree
     ~RedBlackTree();
     RedBlackTree(const RedBlackTree<KeyType>& rbt);
 
-    bool               empty() const { return root == NULL; } // return true if empty; false o/w
+    bool               empty() const { return root == nil; } // return true if empty; false o/w
     KeyType *          get(const KeyType& k); // return first element with key equal to k
     void               insert(KeyType *k); // insert k into the tree
     void               remove(const KeyType& k); // delete first element with key equal to k
@@ -40,6 +40,9 @@ class RedBlackTree
     void               transplant(Node<KeyType>* rem, Node<KeyType>* rep); //variables in function call subject to change
     KeyType *          min(Node<KeyType> *node) const; // return the minimum element
     KeyType *          max(Node<KeyType> *node) const; // return the maximum element
+    void               insertFixup(Node<KeyType> *node);
+    void               leftRotate(Node<KeyType> *node);
+    void               rightRotate(Node<KeyType> *node);
 
     void               copy(Node<KeyType>* node); //creates a copy of a rbt with the root of another bst
     void               destroy(Node<KeyType>* node);
