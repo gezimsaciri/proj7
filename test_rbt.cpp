@@ -295,7 +295,7 @@ void test_assignment(){
   B.insert(&l);
   B.insert(&m);
   B.insert(&n);
-  //B = A;
+  B = A;
   //assert(A.inOrder() == B.inOrder());
   //assert(A.preOrder() == B.preOrder());
   //assert(A.postOrder() == B.postOrder());

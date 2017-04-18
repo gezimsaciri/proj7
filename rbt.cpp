@@ -34,7 +34,7 @@ RedBlackTree<KeyType>::RedBlackTree(const RedBlackTree<KeyType>& rbt){
   root = nil;
   nil->color = BLACK;
   Node<KeyType>* traverse = rbt.root;
-  copy(traverse);
+  copy(traverse, nil);
 }
 
 //=====================================
@@ -338,7 +338,7 @@ RedBlackTree<KeyType>&  RedBlackTree<KeyType>::operator=(const RedBlackTree<KeyT
   destroy(root);
   root = nil; //set to nil AFTER we destroy so we can still traverse
   Node<KeyType>* traverse = rbt.root;
-  copy(traverse);
+  copy(traverse, nil);
 }
 
 //=====================================
@@ -445,13 +445,15 @@ string  RedBlackTree<KeyType>::postOrd(Node<KeyType> *node, std::string& tree)co
 // pre condition: A RedBlackTree and a node that is set to the root of the tree to copy
 // post condition: The RedBlackTree that is the copy of the passed in tree
 template <class KeyType>
-void RedBlackTree<KeyType>::copy(Node<KeyType>* traverse){
+Node<KeyType>* RedBlackTree<KeyType>::copy(Node<KeyType>* traverse, Node<KeyType>* parent){
   if(traverse == nil){ //assuming we don't need to check if traverse is NULL?
-    return;
+    return nil;
   }
-  insert(traverse->key); //insert value
-  copy(traverse->leftChild); //go left
-  copy(traverse->rightChild);//go right
+  Node<KeyType> *n = new Node<KeyType>;
+  n->key = traverse->key;
+  n->parent = parent;
+  n->leftChild = copy(traverse->leftChild, traverse);
+  n->rightChild = copy(traverse->rightChild, traverse);
 }
 
 //=====================================

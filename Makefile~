@@ -1,0 +1,26 @@
+# Makefile for set
+#****************************************************************
+
+CPPOPTIONS = -std=c++11 -g -Wall
+LDOPTIONS =
+
+# ***************************************************************
+# Entry to bring the package up to date
+#    The "make all" entry should be the first real entry
+
+all: test_listS
+
+test_list: List.h main.cc
+	g++ $(CPPOPTIONS) -o test_list main.cc
+
+
+# ***************************************************************
+# Standard entries to remove files from the directories
+#    tidy  -- eliminate unwanted files
+#    clean -- delete derived files in preparation for rebuild
+
+tidy:
+	rm -f ,* .,* *~ core a.out *.err
+
+clean: tidy
+	rm -f *.o
