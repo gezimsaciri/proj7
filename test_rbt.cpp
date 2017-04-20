@@ -30,9 +30,9 @@ void test_copy(){
   A.insert(&j);
   A.insert(&k);
   RedBlackTree<int> B(A);
-  cout << "A.inOrder() = \n" << A.inOrder() << endl;
-  cout << "A.preOrder() = \n" << A.preOrder() << endl;
-  cout << "A.postOrder() = \n" << A.postOrder() << endl;
+  //cout << "A.inOrder() = \n" << A.inOrder() << endl;
+  //cout << "A.preOrder() = \n" << A.preOrder() << endl;
+  //cout << "A.postOrder() = \n" << A.postOrder() << endl;
   assert(A.inOrder() == B.inOrder());
   assert(A.preOrder() == B.preOrder());
   assert(A.postOrder() == B.postOrder());
@@ -297,10 +297,23 @@ void test_assignment(){
   B.insert(&l);
   B.insert(&m);
   B.insert(&n);
-  //B = A;
-  //assert(A.inOrder() == B.inOrder());
-  //assert(A.preOrder() == B.preOrder());
-  //assert(A.postOrder() == B.postOrder());
+  B = A;
+  assert(A.inOrder() == B.inOrder());
+  assert(A.preOrder() == B.preOrder());
+  assert(A.postOrder() == B.postOrder());
+}
+
+void test_question1(){
+  RedBlackTree<int> A;
+  assert(A.empty());
+  int a = 41, b = 38, c = 31, d = 12, e = 19, f = 8;
+  A.insert(&a);
+  A.insert(&b);
+  A.insert(&c);
+  A.insert(&d);
+  A.insert(&e);
+  A.insert(&f);
+  cout << A.preOrder() << endl;
 }
 
 int main(){
@@ -318,6 +331,7 @@ int main(){
   test_inOrder();
   test_preOrder();
   test_postOrder();
+  test_question1();
   cout << "Red Black Tree: All Tests Passed!\n";
 
   return 0;

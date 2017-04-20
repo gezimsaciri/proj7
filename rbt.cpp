@@ -28,8 +28,7 @@ RedBlackTree<KeyType>::~RedBlackTree(){
 template <class KeyType>
 RedBlackTree<KeyType>::RedBlackTree(const RedBlackTree<KeyType>& rbt){
   nil = new Node<KeyType>;
-  root = copy(rbt.root, nil, rbt.nil); //need to pass in the other tree's nil
-  // if we don't we won't know where to stop when traversing it
+  root = copy(rbt.root, nil, rbt.nil); //need to pass in the other tree's nil to know when to stop traversing
 }
 
 //=====================================
@@ -332,7 +331,7 @@ template <class KeyType>
 RedBlackTree<KeyType>&  RedBlackTree<KeyType>::operator=(const RedBlackTree<KeyType> &rbt){
   destroy(root);
   Node<KeyType>* traverse = rbt.root;
-  root = copy(traverse, rbt.nil);
+  root = copy(traverse, nil, rbt.nil);
 }
 
 //=====================================
@@ -342,9 +341,6 @@ RedBlackTree<KeyType>&  RedBlackTree<KeyType>::operator=(const RedBlackTree<KeyT
 template <class KeyType>
 Node<KeyType>*  RedBlackTree<KeyType>::search(const KeyType& k){
   Node<KeyType>* n = root;
-
-  // do we make root nil or nil? would matter in here.
-
   while(n != nil && *n->key != k){
     if(!(*n->key < k) && (*n->key != k)){
       n = n->leftChild;

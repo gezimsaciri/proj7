@@ -66,21 +66,21 @@ int main(){
   //randomizeFile("movies_mpaa.txt", "movies_mpaa_random.txt");
 
   //used this for testing timing
-/*
+
   double timeCount = 0.0;
   for (int i = 0; i < 100; i++){
     timeval timeBefore, timeAfter;
     long diffSeconds, diffUSeconds;
-    ifstream inputFile("movies_mpaa.txt");
+    ifstream inputFile("words");
     string line;
-    int iTabIndex;
+    //int iTabIndex;
     Dictionary<Movie> dict;
     gettimeofday(&timeBefore, NULL);
     while (getline(inputFile, line)){
-      iTabIndex = line.find('\t');
+      //iTabIndex = line.find('\t');
       Movie *m = new Movie;
-      m->title = line.substr(0,iTabIndex);
-      m->cast = line.substr(iTabIndex+1);
+      m->title = line;//line.substr(0,iTabIndex);
+      //m->cast = line.substr(iTabIndex+1);
       dict.insert(m);
     }
     gettimeofday(&timeAfter, NULL);
@@ -89,7 +89,7 @@ int main(){
     timeCount += (diffSeconds + diffUSeconds/1000000.0);
   }
   cout << "Average time over 100 trials: " << timeCount/100 << endl;
-*/
+/*
   ifstream inputFile("movies_mpaa.txt");
   if (!inputFile.is_open()){
     cout << "Could not open input file (1), exiting.\n";
@@ -126,4 +126,5 @@ int main(){
       cout << "Cast: " << n->cast << endl;
     }
   }
+  */
 }
